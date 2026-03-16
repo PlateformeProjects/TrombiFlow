@@ -63,6 +63,7 @@ const ExcelParser = {
 
             const group = this.findValue(row, ['classe', 'groupe', 'section', 'promo']);
             const email = this.findValue(row, ['email', 'e-mail', 'mail']);
+            const specialite = this.findValue(row, ['spé janvier', 'specialite', 'spécialité']);
 
             let finalFirstName = firstName;
             let finalLastName = lastName;
@@ -90,6 +91,7 @@ const ExcelParser = {
                 fullName: `${finalFirstName || ''} ${finalLastName || ''}`.trim() || `Élève ${index + 1}`,
                 photo: photo ? String(photo).trim() : null,
                 group: group || 'N/A',
+                specialite: specialite || '',
                 email: email || null,
                 metadata: row
             };

@@ -60,7 +60,12 @@
         <!-- Content Grid -->
         <div id="contentSection" class="hidden space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" id="statsTitle">Élèves (0)</h2>
+                <div class="flex items-center space-x-4">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white" id="statsTitle">Élèves (0)</h2>
+                    <select id="filterSpecialite" class="block w-full sm:w-auto pl-3 pr-10 py-2 text-sm border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md bg-white dark:bg-gray-800 dark:text-white">
+                        <option value="">Toutes les spécialités</option>
+                    </select>
+                </div>
                 <div class="sm:hidden">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

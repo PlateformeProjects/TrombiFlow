@@ -10,9 +10,27 @@ const UI = {
         statsTitle: document.getElementById('statsTitle'),
         searchInput: document.getElementById('searchInput'),
         mobileSearchInput: document.getElementById('mobileSearchInput'),
+        filterSpecialite: document.getElementById('filterSpecialite'),
         fileInput: document.getElementById('fileInput'),
         uploadBtn: document.getElementById('uploadBtn'),
         themeToggle: document.getElementById('themeToggle')
+    },
+
+    /**
+     * Populates the specialite filter dropdown.
+     */
+    populateSpecialiteFilter: function(specialites) {
+        const select = this.elements.filterSpecialite;
+        // Keep the first "All" option
+        select.innerHTML = '<option value="">Toutes les spécialités</option>';
+        
+        specialites.sort().forEach(spec => {
+            if (!spec) return;
+            const option = document.createElement('option');
+            option.value = spec;
+            option.textContent = spec;
+            select.appendChild(option);
+        });
     },
 
     /**
@@ -73,16 +91,16 @@ const UI = {
                      class="w-full h-full object-cover"
                      onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(student.fullName)}&background=random&size=200&color=fff&bold=true'">
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                    ${student.specialite ? `
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">
-                        ${student.group}
-                    </span>
+                        ${student.specialite}
+                    </span>` : ''}
                 </div>
             </div>
             <div class="p-4">
                 <h3 class="font-bold text-gray-900 dark:text-white truncate">
                     ${(student.lastName || '').toUpperCase()} ${student.firstName || ''}
                 </h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 truncate">${student.group}</p>
                 <div class="flex items-center text-xs text-blue-600 dark:text-blue-400 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                     <i data-lucide="info" class="w-3.5 h-3.5 mr-1.5"></i>
                     <span>Cliquer pour les détails</span>

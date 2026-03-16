@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const AppState = {
         allStudents: [],
         filteredStudents: [],
+        selectedSpecialite: '',
         isLoading: false
     };
 
@@ -25,12 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const students = await ExcelParser.parseFile(file);
             AppState.allStudents = students;
             AppState.filteredStudents = students;
+            AppState.selectedSpecialite = '';
             
+            // Extract unique specialities
+            const specialites = [...new Set(students.map(s => s.specialite).filter(Boolean))];
+            UI.populateSpecialiteFilter(specialites);
+
             UI.showContent();
             UI.renderStudents(students);
             
             UI.elements.searchInput.value = '';
             UI.elements.mobileSearchInput.value = '';
+            UI.elements.filterSpecialite.value = '';
 
         } catch (error) {
             console.error('Error parsing file:', error);
@@ -43,14 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Filters students based on search query.
+     * Filters students based on search query and selected specialite.
      */
-    function handleSearch(query) {
-        const normalizedQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    function handleSearch() {
+        const query = (UI.elements.searchInput.value || UI.elements.mobileSearchInput.value || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const specialite = AppState.selectedSpecialite;
         
         AppState.filteredStudents = AppState.allStudents.filter(student => {
-            const searchableText = `${student.fullName} ${student.group}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return searchableText.includes(normalizedQuery);
+            const matchesQuery = !query || `${student.fullName} ${student.group} ${student.specialite || ''}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query);
+            const matchesSpecialite = !specialite || student.specialite === specialite;
+            
+            return matchesQuery && matchesSpecialite;
         });
 
         UI.renderStudents(AppState.filteredStudents);
@@ -86,12 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    UI.elements.searchInput.addEventListener('input', (e) => {
-        handleSearch(e.target.value);
+    UI.elements.searchInput.addEventListener('input', () => {
+        handleSearch();
     });
 
-    UI.elements.mobileSearchInput.addEventListener('input', (e) => {
-        handleSearch(e.target.value);
+    UI.elements.mobileSearchInput.addEventListener('input', () => {
+        handleSearch();
+    });
+
+    UI.elements.filterSpecialite.addEventListener('change', (e) => {
+        AppState.selectedSpecialite = e.target.value;
+        handleSearch();
     });
 
     document.addEventListener('dragover', (e) => e.preventDefault());
