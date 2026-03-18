@@ -18,9 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!file) return;
 
         const originalBtnText = UI.elements.uploadBtn.innerHTML;
-        UI.elements.uploadBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i>...';
+        UI.elements.uploadBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>...</span>';
         lucide.createIcons();
         UI.elements.uploadBtn.disabled = true;
+        UI.elements.uploadBtn.classList.add('opacity-80', 'cursor-not-allowed');
 
         try {
             const students = await ExcelParser.parseFile(file);
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`Erreur : ${error.message}`);
         } finally {
             UI.elements.uploadBtn.innerHTML = originalBtnText;
+            UI.elements.uploadBtn.classList.remove('opacity-80', 'cursor-not-allowed');
             lucide.createIcons();
             UI.elements.uploadBtn.disabled = false;
         }
@@ -57,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const specialite = AppState.selectedSpecialite;
         
         AppState.filteredStudents = AppState.allStudents.filter(student => {
-            const matchesQuery = !query || `${student.fullName} ${student.group} ${student.specialite || ''}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query);
+            const searchableText = `${student.firstName} ${student.lastName} ${student.fullName} ${student.group} ${student.specialite || ''}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const matchesQuery = !query || searchableText.includes(query);
             const matchesSpecialite = !specialite || student.specialite === specialite;
             
             return matchesQuery && matchesSpecialite;

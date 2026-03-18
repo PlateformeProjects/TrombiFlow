@@ -15,13 +15,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" type="image/png" href="assets/plateforme_icon.png">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
     <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <i data-lucide="users" class="w-8 h-8 text-blue-600"></i>
+                <img src="assets/plateforme_icon.png" alt="TrombiFlow Logo" class="w-8 h-8 rounded-md">
                 <h1 class="text-xl font-bold tracking-tight dark:text-white">TrombiFlow</h1>
             </div>
             <div class="flex-1 max-w-md mx-8 hidden sm:block">
@@ -37,8 +38,8 @@
                     <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
                 </button>
-                <button id="uploadBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                    <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
+                <button id="uploadBtn" class="inline-flex items-center justify-center gap-2 px-4 py-2 border border-transparent text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/20 text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                    <i data-lucide="upload" class="w-4 h-4"></i>
                     <span class="hidden xs:inline">Importer</span>
                 </button>
                 <input type="file" id="fileInput" accept=".xlsx, .xls, .csv" class="hidden">
@@ -56,8 +57,8 @@
             <p class="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-8">
                 Importez un fichier Excel (.xlsx) ou CSV contenant la liste de vos élèves pour générer automatiquement le trombinoscope.
             </p>
-            <button onclick="document.getElementById('fileInput').click()" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
-                <i data-lucide="upload" class="w-5 h-5 mr-2"></i>
+            <button onclick="document.getElementById('fileInput').click()" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 border border-transparent text-base font-semibold rounded-xl shadow-xl shadow-blue-500/20 text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 transform hover:scale-[1.05] active:scale-[0.95]">
+                <i data-lucide="upload" class="w-5 h-5"></i>
                 Choisir un fichier
             </button>
         </div>
