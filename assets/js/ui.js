@@ -13,7 +13,8 @@ const UI = {
         filterSpecialite: document.getElementById('filterSpecialite'),
         fileInput: document.getElementById('fileInput'),
         uploadBtn: document.getElementById('uploadBtn'),
-        themeToggle: document.getElementById('themeToggle')
+        themeToggle: document.getElementById('themeToggle'),
+        clearDataBtn: document.getElementById('clearDataBtn')
     },
 
     /**
@@ -39,7 +40,20 @@ const UI = {
     showContent: function() {
         this.elements.emptyState.classList.add('hidden');
         this.elements.contentSection.classList.remove('hidden');
+        this.elements.clearDataBtn.classList.remove('hidden');
         this.elements.searchInput.disabled = false;
+    },
+
+    /**
+     * Hides the content section and shows the empty state.
+     */
+    hideContent: function() {
+        this.elements.emptyState.classList.remove('hidden');
+        this.elements.contentSection.classList.add('hidden');
+        this.elements.clearDataBtn.classList.add('hidden');
+        this.elements.searchInput.disabled = true;
+        this.elements.searchInput.value = '';
+        this.elements.filterSpecialite.innerHTML = '<option value="">Toutes les spécialités</option>';
     },
 
     /**

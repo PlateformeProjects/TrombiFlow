@@ -25,20 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const students = await ExcelParser.parseFile(file);
-            AppState.allStudents = students;
-            AppState.filteredStudents = students;
-            AppState.selectedSpecialite = '';
+            updateAppStateAndUI(students);
             
-            // Extract unique specialities
-            const specialites = [...new Set(students.map(s => s.specialite).filter(Boolean))];
-            UI.populateSpecialiteFilter(specialites);
-
-            UI.showContent();
-            UI.renderStudents(students);
-            
-            UI.elements.searchInput.value = '';
-            UI.elements.mobileSearchInput.value = '';
-            UI.elements.filterSpecialite.value = '';
+            // Save to localStorage
+            localStorage.setItem('studentsData', JSON.stringify(students));
 
         } catch (error) {
             console.error('Error parsing file:', error);
@@ -48,6 +38,44 @@ document.addEventListener('DOMContentLoaded', () => {
             UI.elements.uploadBtn.classList.remove('opacity-80', 'cursor-not-allowed');
             lucide.createIcons();
             UI.elements.uploadBtn.disabled = false;
+        }
+    }
+
+    /**
+     * Updates the application state and UI with a new list of students.
+     */
+    function updateAppStateAndUI(students) {
+        AppState.allStudents = students;
+        AppState.filteredStudents = students;
+        AppState.selectedSpecialite = '';
+        
+        // Extract unique specialities
+        const specialites = [...new Set(students.map(s => s.specialite).filter(Boolean))];
+        UI.populateSpecialiteFilter(specialites);
+
+        UI.showContent();
+        UI.renderStudents(students);
+        
+        UI.elements.searchInput.value = '';
+        UI.elements.mobileSearchInput.value = '';
+        UI.elements.filterSpecialite.value = '';
+    }
+
+    /**
+     * Loads saved students from localStorage.
+     */
+    function loadSavedStudents() {
+        const savedData = localStorage.getItem('studentsData');
+        if (savedData) {
+            try {
+                const students = JSON.parse(savedData);
+                if (Array.isArray(students) && students.length > 0) {
+                    updateAppStateAndUI(students);
+                }
+            } catch (e) {
+                console.error('Error loading saved students:', e);
+                localStorage.removeItem('studentsData');
+            }
         }
     }
 
@@ -85,7 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     });
 
+    UI.elements.clearDataBtn.addEventListener('click', () => {
+        if (confirm('Voulez-vous vraiment supprimer toutes les données importées ?')) {
+            localStorage.removeItem('studentsData');
+            AppState.allStudents = [];
+            AppState.filteredStudents = [];
+            AppState.selectedSpecialite = '';
+            UI.hideContent();
+        }
+    });
+
     initTheme();
+    loadSavedStudents();
 
     // --- Event Listeners ---
 
